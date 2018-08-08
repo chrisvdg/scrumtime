@@ -38,7 +38,7 @@ func main() {
 	c := cron.New()
 	c.AddFunc(cfg.Schedule, sendMessage)
 	c.Start()
-
+	fmt.Println("Scheduled messages")
 	sig := make(chan os.Signal)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 	<-sig
