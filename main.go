@@ -44,8 +44,9 @@ func main() {
 	}
 
 	c.Start()
-	fmt.Println("Jobs are scheduled")
+	fmt.Println("Jobs are scheduled.\nPress ctrl + c to stop and exit.")
 	sig := make(chan os.Signal)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 	<-sig
+	c.Stop()
 }
