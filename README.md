@@ -9,8 +9,8 @@ Create a yaml file called `config.yaml` and insert the following data for each j
 * message: The message you want the bot to send
 * api_key: Slack OAuth Access Token
 * schedule: Cron schedule  
-    e.g: '0 0 * * 1-5': This send the message every weekday at midnight  
-    More info https://godoc.org/github.com/robfig/cron
+    e.g: '0 0 0 * * 1-5': This send the message every weekday at midnight  
+    More info https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format
 
 Config example:
 
@@ -20,7 +20,7 @@ schedules:
     channel: 'my channel'
     message: 'Hello world'
     api_key: 'xoxp-38811....'
-    schedule: '0 0 * * 1-5'
+    schedule: '0 0 0 * * 1-5'
 ```
 
 Run
