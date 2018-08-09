@@ -25,12 +25,17 @@ var (
 func main() {
 
 	configPath := flag.String("c", "config.yaml", "YAML config file location")
+	verbose := flag.Bool("v", false, "verbose output")
 	flag.Parse()
 
 	var err error
 	cfg, err = config.NewAppFromYaml(*configPath)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if *verbose {
+		fmt.Println(cfg.Repr())
 	}
 
 	api = slack.New(cfg.APIKey)
