@@ -3,7 +3,7 @@ Simple slack bot announcing scrum time
 
 ## Usage
 
-Create a yaml file called `config.yaml` and insert the following data:
+Create a yaml file called `config.yaml` and insert the following data for each job:
 
 * channel: Channel name to sent message too
 * message: The message you want the bot to send
@@ -12,21 +12,24 @@ Create a yaml file called `config.yaml` and insert the following data:
     e.g: '0 0 * * 1-5': This send the message every weekday at midnight  
     More info https://godoc.org/github.com/robfig/cron
 
-example:
+Config example:
 
 ```yaml
-channel: 'my channel'
-message: 'Hello world'
-api_key: 'xoxp-38811....'
-schedule: '0 0 * * 1-5'
+schedules:
+  a_job: # Name of your job to schedule
+    channel: 'my channel'
+    message: 'Hello world'
+    api_key: 'xoxp-38811....'
+    schedule: '0 0 * * 1-5'
 ```
 
-run
+Run
 ```sh
+# this will take `./config.yaml` as config file per default
 go run main.go
 ```
 
-Alternatively if you have a config file in a different path or name
+Alternatively to explicitly add the config file:
 ```sh
 go run main.go -c <path/to/file>/myconfig.yaml
 ```
