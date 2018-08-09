@@ -7,7 +7,10 @@ Create a yaml file called `config.yaml` and insert the following data for each j
 
 * channel: Channel name to sent message too
 * message: The message you want the bot to send
-* api_key: Slack OAuth Access Token
+* api_key: Slack OAuth Access Token.  
+Register app and add app to workspace at: https://api.slack.com/apps  
+Add a bot user.
+Then get the key at `Features/OAuth & Permissions`  
 * schedule: Cron schedule  
     e.g: '0 0 0 * * 1-5': This send the message every weekday at midnight  
     More info https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format
