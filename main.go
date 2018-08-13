@@ -17,7 +17,6 @@ func init() {
 }
 
 func main() {
-
 	configPath := flag.String("c", "config.yaml", "YAML config file location")
 	verbose := flag.Bool("v", false, "verbose output")
 	flag.Parse()

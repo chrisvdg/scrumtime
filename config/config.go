@@ -57,7 +57,7 @@ func addIndent(s string) string {
 	return strings.Replace(s, "\n", "\n\t", -1)
 }
 
-// Schedule reprents the configuration of a single schedule
+// Schedule represents the configuration of a single schedule
 type Schedule struct {
 	APIKey   string `yaml:"api_key"`
 	Channel  string `yaml:"channel"`
