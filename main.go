@@ -28,14 +28,14 @@ func main() {
 	}
 
 	if *verbose {
-		fmt.Println("Config:")
-		fmt.Println(cfg.Repr())
+		fmt.Println("Verbose set true")
+		// fmt.Println("Config:")
+		// fmt.Println(cfg.Repr())
 	}
-
 	c := cron.New()
 
 	for name, scheduleCfg := range cfg.Schedules {
-		job, err := NewSchedulesMessage(name, scheduleCfg)
+		job, err := NewScheduledMessage(name, scheduleCfg, *verbose)
 		if err != nil {
 			log.Fatal(err)
 		}
