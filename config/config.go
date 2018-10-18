@@ -9,11 +9,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// App represents the app's configuration
-type App struct {
-	Schedules map[string]*Schedule `yaml:"schedules"`
-}
-
 // NewAppFromYaml returns the app data from provided yaml file
 func NewAppFromYaml(path string) (*App, error) {
 	app := new(App)
@@ -27,6 +22,27 @@ func NewAppFromYaml(path string) (*App, error) {
 	err = yaml.Unmarshal(raw, app)
 
 	return app, nil
+}
+
+// App represents the app's configuration
+type App struct {
+	Schedules map[string]*Schedule `yaml:"schedules"`
+}
+
+// Validate validates an app config
+func (a *App) Validate() error {
+
+	if len(a.Schedules) == 0 {
+		return fmt.Errorf("config file doesn't contain schedules")
+	}
+
+	for sName, s := range a.Schedules {
+		if len(s.Messengers) == 0 {
+			return fmt.Errorf("schedule %s doesn't contain any messengers", sName)
+		}
+	}
+
+	return nil
 }
 
 /*
