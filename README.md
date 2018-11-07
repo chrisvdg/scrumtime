@@ -47,3 +47,19 @@ Alternatively to explicitly add the config file:
 ```sh
 go run main.go -c <path/to/file>/myconfig.yaml
 ```
+
+### Docker image
+
+This project has a Dockerfile to create a small docker image of this project.
+
+Generate image:
+```sh
+docker build -t scrumtime .
+```
+
+Run container with image:
+```
+docker create --name scrumtime_helloworld scrumtime
+docker cp config.yaml scrumtime_helloworld:/
+docker start scrumtime_helloworld
+```
