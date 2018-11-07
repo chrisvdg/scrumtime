@@ -21,24 +21,43 @@ func NewAppFromYaml(path string) (*App, error) {
 	}
 	err = yaml.Unmarshal(raw, app)
 
+	if err != nil {
+		return nil, err
+	}
+
+	err = app.Validate()
+	if err != nil {
+		return nil, err
+	}
+
 	return app, nil
 }
 
 // App represents the app's configuration
 type App struct {
-	Schedules map[string]*Schedule `yaml:"schedules"`
+	Messengers map[string]*Messenger `yaml:"messengers"`
+	Schedules  map[string]*Schedule  `yaml:"schedules"`
 }
 
 // Validate validates an app config
 func (a *App) Validate() error {
-
 	if len(a.Schedules) == 0 {
 		return fmt.Errorf("config file doesn't contain schedules")
+	}
+
+	if len(a.Messengers) == 0 {
+		return fmt.Errorf("config file doesn't contain messengers")
 	}
 
 	for sName, s := range a.Schedules {
 		if len(s.Messengers) == 0 {
 			return fmt.Errorf("schedule %s doesn't contain any messengers", sName)
+		}
+
+		for _, msgr := range s.Messengers {
+			if _, ok := a.Messengers[msgr]; !ok {
+				return fmt.Errorf("messenger %s not defined", msgr)
+			}
 		}
 	}
 
@@ -66,9 +85,9 @@ func addIndent(s string) string {
 
 // Schedule represents the configuration of a single schedule
 type Schedule struct {
-	Messengers []Messenger `yaml:"messengers"`
-	Schedule   string      `yaml:"schedule"`
-	Message    string      `yaml:"message"`
+	Messengers []string `yaml:"messengers"`
+	Schedule   string   `yaml:"schedule"`
+	Message    string   `yaml:"message"`
 }
 
 // Messenger represents a messenger config

@@ -9,7 +9,7 @@ import (
 )
 
 // NewScheduledMessage returns a schedules message that implements cron.Job
-func NewScheduledMessage(name string, cfg *config.Schedule, verbose bool) (ScheduledMessage, error) {
+func NewScheduledMessage(name string, cfg *config.Schedule, msgrs map[string]*config.Messenger, verbose bool) (ScheduledMessage, error) {
 	var sm ScheduledMessage
 	sm.cfg = cfg
 	sm.name = name
@@ -17,23 +17,24 @@ func NewScheduledMessage(name string, cfg *config.Schedule, verbose bool) (Sched
 	messengers := make([]messenger.Messenger, 0)
 
 	for _, m := range cfg.Messengers {
-		switch strings.ToLower(m.Platform) {
+		msgr := msgrs[m]
+		switch strings.ToLower(msgr.Platform) {
 		case "slack":
-			slackMsgr, err := messenger.NewSlackMessenger(m.ChatID, cfg.Message, m.APIKey)
+			slackMsgr, err := messenger.NewSlackMessenger(msgr.ChatID, cfg.Message, msgr.APIKey)
 			if err != nil {
 				return sm, err
 			}
 			messengers = append(messengers, slackMsgr)
 
 		case "telegram":
-			telegramMsgr, err := messenger.NewTelegramMessenger(m.ChatID, cfg.Message, m.APIKey)
+			telegramMsgr, err := messenger.NewTelegramMessenger(msgr.ChatID, cfg.Message, msgr.APIKey)
 			if err != nil {
 				return sm, err
 			}
 			messengers = append(messengers, telegramMsgr)
 
 		default:
-			return sm, fmt.Errorf("unrecognized platform: %s", m.Platform)
+			return sm, fmt.Errorf("unrecognized platform: %s", msgr.Platform)
 
 		}
 	}

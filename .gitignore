@@ -4,6 +4,8 @@
 *.dll
 *.so
 *.dylib
+scrumtime
+main
 
 # Test binary, build with `go test -c`
 *.test

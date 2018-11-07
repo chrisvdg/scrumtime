@@ -35,7 +35,7 @@ func main() {
 	c := cron.New()
 
 	for name, scheduleCfg := range cfg.Schedules {
-		job, err := NewScheduledMessage(name, scheduleCfg, *verbose)
+		job, err := NewScheduledMessage(name, scheduleCfg, cfg.Messengers, *verbose)
 		if err != nil {
 			log.Fatal(err)
 		}

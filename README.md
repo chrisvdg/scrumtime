@@ -18,11 +18,22 @@ Then get the key at `Features/OAuth & Permissions`
 Config example:
 
 ```yaml
+messengers:
+  ex_slack:
+    platform: slack
+    api_key: 'xoxp-388...123'
+    chat_id: test_channel
+  ex_telegram:
+    platform: telegram
+    api_key: '123456789:AAF...E_Y'
+    chat_id: '-123456789'
+
 schedules:
-  a_job: # Name of your job to schedule
-    channel: 'my channel'
-    message: 'Hello world'
-    api_key: 'xoxp-38811....'
+  example:
+    message: 'Hello world!'
+    messengers:
+      - ex_slack
+      - ex_telegram
     schedule: '0 0 0 * * 1-5'
 ```
 
