@@ -64,20 +64,6 @@ func (a *App) Validate() error {
 	return nil
 }
 
-/*
-// Repr resturns a string representation of the app configuration
-func (a *App) Repr() string {
-	var s string
-
-	for k, v := range a.Schedules {
-		v := addIndent(v.Repr())
-		s += fmt.Sprintf("%s:\n\t%s\v\n", k, v)
-	}
-
-	return s
-}
-*/
-
 // addIndent adds an indentation after each new line in the provided string
 func addIndent(s string) string {
 	return strings.Replace(s, "\n", "\n\t", -1)

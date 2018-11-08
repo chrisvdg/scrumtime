@@ -17,25 +17,26 @@ func NewScheduledMessage(name string, cfg *config.Schedule, msgrs map[string]*co
 	messengers := make([]messenger.Messenger, 0)
 
 	for _, m := range cfg.Messengers {
-		msgr := msgrs[m]
+		msgr, ok := msgrs[m]
+		if !ok {
+			return sm, fmt.Errorf("messenger %s not found", m)
+		}
+
 		switch strings.ToLower(msgr.Platform) {
 		case "slack":
-			slackMsgr, err := messenger.NewSlackMessenger(msgr.ChatID, cfg.Message, msgr.APIKey)
+			slackMsgr, err := messenger.NewSlackMessenger(msgr.ChatID, cfg.Message, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}
 			messengers = append(messengers, slackMsgr)
-
 		case "telegram":
-			telegramMsgr, err := messenger.NewTelegramMessenger(msgr.ChatID, cfg.Message, msgr.APIKey)
+			telegramMsgr, err := messenger.NewTelegramMessenger(msgr.ChatID, cfg.Message, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}
 			messengers = append(messengers, telegramMsgr)
-
 		default:
 			return sm, fmt.Errorf("unrecognized platform: %s", msgr.Platform)
-
 		}
 	}
 

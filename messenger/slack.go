@@ -7,7 +7,7 @@ import (
 )
 
 // NewSlackMessenger returns a new Slack messenger
-func NewSlackMessenger(channel, message, apikey string) (*SlackMessenger, error) {
+func NewSlackMessenger(channel, message, apikey string, verbose bool) (*SlackMessenger, error) {
 	if apikey == "" {
 		return nil, fmt.Errorf("no api key provided")
 	}
@@ -18,6 +18,7 @@ func NewSlackMessenger(channel, message, apikey string) (*SlackMessenger, error)
 	sm.Message = message
 	sm.Channel = channel
 	sm.client = slack.New(apikey)
+	sm.verbose = verbose
 
 	return sm, nil
 }
@@ -27,11 +28,14 @@ type SlackMessenger struct {
 	Channel string
 	Message string
 	client  *slack.Client
+	verbose bool
 }
 
 // SendMessage implements messenger.SendMessage
 func (s *SlackMessenger) SendMessage() error {
-	fmt.Println("sending Slack message...")
+	if s.verbose {
+		fmt.Println("sending Slack message...")
+	}
 	channelID, timestamp, err := s.client.PostMessage(
 		s.Channel,
 		s.Message,

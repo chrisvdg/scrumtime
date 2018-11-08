@@ -8,7 +8,7 @@ import (
 )
 
 // NewTelegramMessenger returns a new Telegram messenger
-func NewTelegramMessenger(chatID, message, apikey string) (*TelegramMessenger, error) {
+func NewTelegramMessenger(chatID, message, apikey string, verbose bool) (*TelegramMessenger, error) {
 	client, err := tgbotapi.NewBotAPI(apikey)
 	if err != nil {
 		return nil, err
@@ -22,6 +22,7 @@ func NewTelegramMessenger(chatID, message, apikey string) (*TelegramMessenger, e
 	}
 	tm.Message = message
 	tm.client = client
+	tm.verbose = verbose
 
 	return tm, nil
 }
@@ -31,11 +32,14 @@ type TelegramMessenger struct {
 	ChatID  int64
 	Message string
 	client  *tgbotapi.BotAPI
+	verbose bool
 }
 
 // SendMessage implements messenger.SendMessage
 func (t *TelegramMessenger) SendMessage() error {
-	fmt.Println("sending Telegram message...")
+	if t.verbose {
+		fmt.Println("sending Telegram message...")
+	}
 	msg := tgbotapi.NewMessage(t.ChatID, t.Message)
 	msg.ParseMode = "markdown"
 	_, err := t.client.Send(msg)

@@ -15,4 +15,4 @@ RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 
 COPY --from=builder /go/bin/scrumtime /bin
 
-CMD ["scrumtime -v"]
+CMD ["scrumtime", "-v"]
