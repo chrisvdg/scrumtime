@@ -1,5 +1,5 @@
 # Scrumtime
-Simple slack bot that can be used to announce scrum time
+Simple chat bot that can be used to announce scrum time
 
 ## Usage
 
