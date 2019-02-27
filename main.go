@@ -28,7 +28,7 @@ func main() {
 	}
 
 	if *verbose {
-		fmt.Println("Verbose set true")
+		fmt.Println("Verbose output set.")
 	}
 	c := cron.New()
 
