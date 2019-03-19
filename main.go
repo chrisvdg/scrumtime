@@ -33,11 +33,18 @@ func main() {
 	c := cron.New()
 
 	for name, scheduleCfg := range cfg.Schedules {
+		if len(scheduleCfg.Messengers) == 0 {
+			if *verbose {
+				fmt.Printf("%s does not contain messengers, skipped scheduling the message\n", name)
+			}
+			continue
+		}
 		job, err := NewScheduledMessage(name, scheduleCfg, cfg.Messengers, *verbose)
 		if err != nil {
 			log.Fatal(err)
 		}
 		c.AddJob(scheduleCfg.Schedule, job)
+		fmt.Printf("Scheduled %s\n", name)
 	}
 
 	c.Start()

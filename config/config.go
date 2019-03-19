@@ -49,11 +49,7 @@ func (a *App) Validate() error {
 		return fmt.Errorf("config file doesn't contain messengers")
 	}
 
-	for sName, s := range a.Schedules {
-		if len(s.Messengers) == 0 {
-			return fmt.Errorf("schedule %s doesn't contain any messengers", sName)
-		}
-
+	for _, s := range a.Schedules {
 		for _, msgr := range s.Messengers {
 			if _, ok := a.Messengers[msgr]; !ok {
 				return fmt.Errorf("messenger %s not defined", msgr)
