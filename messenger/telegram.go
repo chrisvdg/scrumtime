@@ -37,12 +37,14 @@ type TelegramMessenger struct {
 
 // SendMessage implements messenger.SendMessage
 func (t *TelegramMessenger) SendMessage() error {
-	if t.verbose {
-		fmt.Println("sending Telegram message...")
-	}
 	msg := tgbotapi.NewMessage(t.ChatID, t.Message)
 	msg.ParseMode = "markdown"
 	_, err := t.client.Send(msg)
 
 	return err
+}
+
+// Platform implements messenger.Platform
+func (*TelegramMessenger) Platform() string {
+	return "Telegram"
 }

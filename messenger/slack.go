@@ -33,9 +33,6 @@ type SlackMessenger struct {
 
 // SendMessage implements messenger.SendMessage
 func (s *SlackMessenger) SendMessage() error {
-	if s.verbose {
-		fmt.Println("sending Slack message...")
-	}
 	channelID, timestamp, err := s.client.PostMessage(
 		s.Channel,
 		s.Message,
@@ -46,4 +43,9 @@ func (s *SlackMessenger) SendMessage() error {
 	}
 
 	return err
+}
+
+// Platform implements messenger.Platform
+func (*SlackMessenger) Platform() string {
+	return "Slack"
 }

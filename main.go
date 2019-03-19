@@ -32,10 +32,11 @@ func main() {
 	}
 	c := cron.New()
 
+	fmt.Println("Scheduling messages:")
 	for name, scheduleCfg := range cfg.Schedules {
 		if len(scheduleCfg.Messengers) == 0 {
 			if *verbose {
-				fmt.Printf("%s does not contain messengers, skipped scheduling the message\n", name)
+				fmt.Printf("\t%s does not contain messengers, skipped scheduling the message\n", name)
 			}
 			continue
 		}
@@ -44,11 +45,11 @@ func main() {
 			log.Fatal(err)
 		}
 		c.AddJob(scheduleCfg.Schedule, job)
-		fmt.Printf("Scheduled %s\n", name)
+		fmt.Printf("\t- %s\n", name)
 	}
 
 	c.Start()
-	fmt.Println("Messages are scheduled.\nPress ctrl + c to stop and exit.")
+	fmt.Println("\nMessages are scheduled.\nPress ctrl + c to stop and exit.")
 	sig := make(chan os.Signal)
 	signal.Notify(sig, os.Interrupt, os.Kill)
 	<-sig

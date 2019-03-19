@@ -56,17 +56,20 @@ type ScheduledMessage struct {
 // Run implements cron.Job.Run
 func (s ScheduledMessage) Run() {
 	if s.verbose {
-		fmt.Printf("Job %s triggered\n", s.name)
+		fmt.Printf("Message %s triggered\n", s.name)
 	}
 
 	for _, m := range s.messengers {
+		if s.verbose {
+			fmt.Printf("Sending message %s on %s\n", s.name, m.Platform())
+		}
 		err := m.SendMessage()
 		if err != nil {
-			fmt.Printf("Job: %s\nSomething went wrong sending the message: %s\n", s.name, err)
+			fmt.Printf("Something went wrong sending message %s on %s: %s\n", s.name, m.Platform(), err)
 		}
 	}
 
 	if s.verbose {
-		fmt.Printf("Job %s completed\n", s.name)
+		fmt.Printf("Message %s completed\n", s.name)
 	}
 }
