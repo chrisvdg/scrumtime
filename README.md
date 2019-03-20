@@ -1,5 +1,10 @@
 # Scrumtime
-Simple chat bot that can be used to announce scrum time
+
+Simple chat bot that can be used to announce scrum time by sending a message to a chat room with a defined schedule.
+
+Supported chat platforms:
+ - [Slack](https://slack.com/)
+ - [Telegram](https://telegram.org/)
 
 ## Usage
 
