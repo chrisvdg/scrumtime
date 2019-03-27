@@ -52,6 +52,17 @@ Generate image:
 docker build -t scrumtime .
 ```
 
+Specify Go version (Go version to build with)
+```sh
+docker build -t scrumtime . --build-arg go_version=1.11
+```
+
+Specify Alpine version (Final image base into which the binary is copied)
+```sh
+docker build -t scrumtime . --build-arg alpine_version=3.8.4
+```
+
+
 Run container with image:
 ```
 docker create --name scrumtime_helloworld scrumtime
