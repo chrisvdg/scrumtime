@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -60,11 +59,6 @@ func (a *App) Validate() error {
 	return nil
 }
 
-// addIndent adds an indentation after each new line in the provided string
-func addIndent(s string) string {
-	return strings.Replace(s, "\n", "\n\t", -1)
-}
-
 // Schedule represents the configuration of a single schedule
 type Schedule struct {
 	Messengers []string `yaml:"messengers"`
@@ -77,15 +71,4 @@ type Messenger struct {
 	Platform string `yaml:"platform"`
 	ChatID   string `yaml:"chat_id"`
 	APIKey   string `yaml:"api_key"`
-}
-
-func truncateString(str string, num int) string {
-	bnoden := str
-	if len(str) > num {
-		if num > 3 {
-			num -= 3
-		}
-		bnoden = str[0:num] + "..."
-	}
-	return bnoden
 }
