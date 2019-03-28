@@ -72,10 +72,10 @@ docker start scrumtime_helloworld
 
 ## Pull docker image
 
-Alternatively, the image pushed on Docker Hub can be used
+Alternatively, the image pushed on Docker Hub can be used.
+This command also mounts (`-v`) the config file into the container instead of copying to it  
+and runs it in the background (`-d`).
 
 ```sh
-docker create --name scrumtime_helloworld chrisvdg/scrumtime # Or with version tag: chrisvdg/scrumtime:0.0.1
-docker cp config.yaml scrumtime_helloworld:/
-docker start scrumtime_helloworld
+docker run --name scrumtime_helloworld -d -v $PWD/config.yaml:/config.yaml chrisvdg/scrumtime # Or with version tag: chrisvdg/scrumtime:0.0.1
 ```
