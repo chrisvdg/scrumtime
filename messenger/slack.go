@@ -7,16 +7,16 @@ import (
 )
 
 // NewSlackMessenger returns a new Slack messenger
-func NewSlackMessenger(channel, message, apikey string, verbose bool) (*SlackMessenger, error) {
+func NewSlackMessenger(channel []string, message, apikey string, verbose bool) (*SlackMessenger, error) {
 	if apikey == "" {
 		return nil, fmt.Errorf("no api key provided")
 	}
-	if channel == "" {
-		return nil, fmt.Errorf("no channel (chat_id) provided")
+	if len(channel) == 0 {
+		return nil, fmt.Errorf("no channels (chat_ids) provided")
 	}
 	sm := new(SlackMessenger)
 	sm.Message = message
-	sm.Channel = channel
+	sm.Channels = channel
 	sm.client = slack.New(apikey)
 	sm.verbose = verbose
 
@@ -25,24 +25,28 @@ func NewSlackMessenger(channel, message, apikey string, verbose bool) (*SlackMes
 
 // SlackMessenger represents a messenger for Slack
 type SlackMessenger struct {
-	Channel string
-	Message string
-	client  *slack.Client
-	verbose bool
+	Channels []string
+	Message  string
+	client   *slack.Client
+	verbose  bool
 }
 
 // SendMessage implements messenger.SendMessage
 func (s *SlackMessenger) SendMessage() error {
-	channelID, timestamp, err := s.client.PostMessage(
-		s.Channel,
-		s.Message,
-		slack.PostMessageParameters{})
+	for _, channel := range s.Channels {
 
-	if err != nil {
-		err = fmt.Errorf("Slack messenger: Something went wrong sending a message (%s at %s): %s", channelID, timestamp, err)
+		channelID, timestamp, err := s.client.PostMessage(
+			channel,
+			s.Message,
+			slack.PostMessageParameters{})
+
+		if err != nil {
+			err = fmt.Errorf("Slack messenger: Something went wrong sending a message (%s at %s): %s", channelID, timestamp, err)
+			return err
+		}
 	}
 
-	return err
+	return nil
 }
 
 // Platform implements messenger.Platform

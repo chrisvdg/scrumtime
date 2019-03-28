@@ -34,41 +34,50 @@ func NewAppFromYaml(path string) (*App, error) {
 
 // App represents the app's configuration
 type App struct {
-	Messengers map[string]*Messenger `yaml:"messengers"`
-	Schedules  map[string]*Schedule  `yaml:"schedules"`
+	Bots     map[string]*Bot     `yaml:"bots"`
+	Messages map[string]*Message `yaml:"messages"`
 }
 
 // Validate validates an app config
 func (a *App) Validate() error {
-	if len(a.Schedules) == 0 {
-		return fmt.Errorf("config file doesn't contain schedules")
+	if len(a.Messages) == 0 {
+		return fmt.Errorf("config file doesn't contain Messages")
 	}
 
-	if len(a.Messengers) == 0 {
+	if len(a.Bots) == 0 {
 		return fmt.Errorf("config file doesn't contain messengers")
 	}
 
-	for _, s := range a.Schedules {
-		for _, msgr := range s.Messengers {
-			if _, ok := a.Messengers[msgr]; !ok {
-				return fmt.Errorf("messenger %s not defined", msgr)
+	for msgName, msg := range a.Messages {
+		for _, msgr := range msg.Messengers {
+			if _, ok := a.Bots[msgr.Bot]; !ok {
+				return fmt.Errorf("bot %s not defined", msgr)
 			}
+		}
+
+		if msg.Body == "" {
+			return fmt.Errorf("message %s does not contain a body", msgName)
 		}
 	}
 
 	return nil
 }
 
-// Schedule represents the configuration of a single schedule
-type Schedule struct {
-	Messengers []string `yaml:"messengers"`
-	Schedule   string   `yaml:"schedule"`
-	Message    string   `yaml:"message"`
+// Message represents the configuration of a single Messaged message
+type Message struct {
+	Messengers []Messenger `yaml:"messengers"`
+	Schedule   string      `yaml:"schedule"`
+	Body       string      `yaml:"body"`
 }
 
-// Messenger represents a messenger config
+// Messenger represents a messenger of a message
 type Messenger struct {
+	Bot     string   `yaml:"bot"`
+	ChatIDs []string `yaml:"chat_ids"`
+}
+
+// Bot represents a bot config
+type Bot struct {
 	Platform string `yaml:"platform"`
-	ChatID   string `yaml:"chat_id"`
 	APIKey   string `yaml:"api_key"`
 }

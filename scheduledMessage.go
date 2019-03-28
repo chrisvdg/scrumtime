@@ -9,7 +9,7 @@ import (
 )
 
 // NewScheduledMessage returns a schedules message that implements cron.Job
-func NewScheduledMessage(name string, cfg *config.Schedule, msgrs map[string]*config.Messenger, verbose bool) (ScheduledMessage, error) {
+func NewScheduledMessage(name string, cfg *config.Message, msgrs map[string]*config.Bot, verbose bool) (ScheduledMessage, error) {
 	var sm ScheduledMessage
 	sm.cfg = cfg
 	sm.name = name
@@ -17,20 +17,20 @@ func NewScheduledMessage(name string, cfg *config.Schedule, msgrs map[string]*co
 	messengers := make([]messenger.Messenger, 0)
 
 	for _, m := range cfg.Messengers {
-		msgr, ok := msgrs[m]
+		msgr, ok := msgrs[m.Bot]
 		if !ok {
 			return sm, fmt.Errorf("messenger %s not found", m)
 		}
 
 		switch strings.ToLower(msgr.Platform) {
 		case "slack":
-			slackMsgr, err := messenger.NewSlackMessenger(msgr.ChatID, cfg.Message, msgr.APIKey, verbose)
+			slackMsgr, err := messenger.NewSlackMessenger(m.ChatIDs, cfg.Body, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}
 			messengers = append(messengers, slackMsgr)
 		case "telegram":
-			telegramMsgr, err := messenger.NewTelegramMessenger(msgr.ChatID, cfg.Message, msgr.APIKey, verbose)
+			telegramMsgr, err := messenger.NewTelegramMessenger(m.ChatIDs, cfg.Body, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}
@@ -48,7 +48,7 @@ func NewScheduledMessage(name string, cfg *config.Schedule, msgrs map[string]*co
 // ScheduledMessage represents a message that needs to be send on cron schedule
 type ScheduledMessage struct {
 	name       string
-	cfg        *config.Schedule
+	cfg        *config.Message
 	messengers []messenger.Messenger
 	verbose    bool
 }
