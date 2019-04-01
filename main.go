@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 
 	"github.com/chrisvdg/scrumtime/config"
 	"github.com/robfig/cron"
@@ -29,6 +30,8 @@ func main() {
 
 	if *verbose {
 		fmt.Println("Verbose output set.")
+		t := time.Now()
+		fmt.Printf("Current date time: %s\n\n", t.Format("02/01/2006 15:04"))
 	}
 	c := cron.New()
 
