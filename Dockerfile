@@ -15,6 +15,7 @@ FROM alpine:$alpine_version
 
 # install certificates
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+RUN apk add tzdata
 
 COPY --from=builder /go/bin/scrumtime /bin
 

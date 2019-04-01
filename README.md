@@ -43,7 +43,8 @@ Alternatively to explicitly add the config file:
 go run main.go -c <path/to/file>/myconfig.yaml
 ```
 
-## Build Docker image
+## Docker
+### Build Docker image
 
 This project has a Dockerfile to create a small docker image of this project.
 
@@ -70,7 +71,7 @@ docker cp config.yaml scrumtime_helloworld:/
 docker start scrumtime_helloworld
 ```
 
-## Pull docker image
+### Pull docker image
 
 Alternatively, the image pushed on Docker Hub can be used.
 This command also mounts (`-v`) the config file into the container instead of copying to it  
@@ -78,4 +79,22 @@ and runs it in the background (`-d`).
 
 ```sh
 docker run --name scrumtime_helloworld -d -v $PWD/config.yaml:/config.yaml chrisvdg/scrumtime # Or with version tag: chrisvdg/scrumtime:0.0.1
+```
+
+### Setting timezone of container
+
+By default the image uses the UTC timezone. To set the timezone of your container, set the `TZ` environmental variable.  
+Using this, you can't set it with abbreviated, use the full name of the `TZ` Database. (Timezone may be changed but time will still be UTC)
+
+```sh
+docker run -e "TZ=Europe/Brussels" -d -v $PWD/config.yaml:/config.yaml chrisvdg/scrumtime
+```
+
+The timezone can also be configured in the Dockerfile so there won't be a need to set it when starting the container. For this the abbreviations can be used.
+
+Add the following lines under `RUN apk add tzdata`
+
+```Dockerfile
+RUN cp /usr/share/zoneinfo/EST /etc/localtime
+RUN echo "EST" >  /etc/timezone
 ```
