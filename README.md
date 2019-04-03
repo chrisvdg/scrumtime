@@ -92,9 +92,8 @@ docker run -e "TZ=Europe/Brussels" -d -v $PWD/config.yaml:/config.yaml chrisvdg/
 
 The timezone can also be configured in the Dockerfile so there won't be a need to set it when starting the container. For this the abbreviations can be used.
 
-Add the following lines under `RUN apk add tzdata`
-
+Replace the line `RUN apk add tzdata` with:
+Replace `EST` (2x) with your timezone.
 ```Dockerfile
-RUN cp /usr/share/zoneinfo/EST /etc/localtime
-RUN echo "EST" >  /etc/timezone
+RUN apk add tzdata && cp /usr/share/zoneinfo/EST /etc/localtime && echo "EST" >  /etc/timezone && apk del tzdata
 ```
