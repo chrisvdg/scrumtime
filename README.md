@@ -8,7 +8,7 @@ Supported chat platforms:
 
 ## Usage
 
-Create a yaml file called `config.yaml` and insert the following data for each job:
+Create a yaml file called `config.yaml` and insert data according the the following structure
 
 Config example:
 
