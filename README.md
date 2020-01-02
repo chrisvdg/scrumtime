@@ -32,6 +32,9 @@ messages:
     schedule: '0 0 0 * * 1-5' # More info on format https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format
 ```
 
+### Schedule
+Schedule is in a Quarts Scheduler format, [more info can he found here.](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)
+
 Run
 ```sh
 # this will take `./config.yaml` as config file by default

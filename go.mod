@@ -9,3 +9,5 @@ require (
 	github.com/technoweenie/multipartstreamer v1.0.1
 	gopkg.in/yaml.v2 v2.2.1
 )
+
+go 1.13
