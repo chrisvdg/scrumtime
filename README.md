@@ -28,8 +28,9 @@ messages:
       - bot: ex_slack
         chat_ids: test_channel
       - bot: ex_telegram
-        chat_ids: '-123456789'
+        chat_ids: ['-123456789']
     schedule: '0 0 0 * * 1-5' # More info on format https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format
+    expiretime: 600 # Optional time in seconds to delete the message again
 ```
 
 ### Schedule

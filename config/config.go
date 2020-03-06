@@ -68,6 +68,7 @@ type Message struct {
 	Messengers []Messenger `yaml:"messengers"`
 	Schedule   string      `yaml:"schedule"`
 	Body       string      `yaml:"body"`
+	ExpireTime int         `yaml:"expiretime"`
 }
 
 // Messenger represents a messenger of a message

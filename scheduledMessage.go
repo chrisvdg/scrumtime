@@ -30,7 +30,7 @@ func NewScheduledMessage(name string, cfg *config.Message, msgrs map[string]*con
 			}
 			messengers = append(messengers, slackMsgr)
 		case "telegram":
-			telegramMsgr, err := messenger.NewTelegramMessenger(m.ChatIDs, cfg.Body, msgr.APIKey, verbose)
+			telegramMsgr, err := messenger.NewTelegramMessenger(m.ChatIDs, cfg, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}
