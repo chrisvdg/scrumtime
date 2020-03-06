@@ -51,7 +51,7 @@ func (t *TelegramMessenger) SendMessage() error {
 		if err != nil {
 			return fmt.Errorf("Telegram messenger: Something went wrong sending message to %d: %s", id, err)
 		}
-		if t.Message.ExpireTime > 0 {
+		if t.Message.ExpireTime != "" {
 			go t.deleteMessage(t.Message.ExpireTime, id, message.MessageID)
 		}
 	}
@@ -60,10 +60,14 @@ func (t *TelegramMessenger) SendMessage() error {
 }
 
 // deleteMessage delete message from a given chat
-func (t *TelegramMessenger) deleteMessage(delay int, chatID int64, messageID int) error {
-	time.Sleep(time.Duration(delay) * time.Second)
+func (t *TelegramMessenger) deleteMessage(delay string, chatID int64, messageID int) error {
+	duration, err := time.ParseDuration(delay)
+	if err != nil {
+		return fmt.Errorf("Invalid expiretime %s", delay)
+	}
+	time.Sleep(duration)
 	msg := tgbotapi.NewDeleteMessage(chatID, messageID)
-	_, err := t.client.Send(msg)
+	_, err = t.client.Send(msg)
 	if err != nil {
 		return fmt.Errorf("Telegram messenger: Something went wrong sending message to %d: %s", chatID, err)
 	}
