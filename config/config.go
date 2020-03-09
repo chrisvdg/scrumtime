@@ -55,8 +55,10 @@ func (a *App) Validate() error {
 				return fmt.Errorf("bot %s not defined", msgr)
 			}
 		}
-		if _, err := time.ParseDuration(msg.ExpireTime); err != nil {
-			return fmt.Errorf("Invalid expiretime %s", msg.ExpireTime)
+		if msg.ExpireTime != "" {
+			if _, err := time.ParseDuration(msg.ExpireTime); err != nil {
+				return fmt.Errorf("Invalid expiretime %s", msg.ExpireTime)
+			}
 		}
 
 		if msg.Body == "" {
