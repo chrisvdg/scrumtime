@@ -24,7 +24,7 @@ func NewScheduledMessage(name string, cfg *config.Message, msgrs map[string]*con
 
 		switch strings.ToLower(msgr.Platform) {
 		case "slack":
-			slackMsgr, err := messenger.NewSlackMessenger(m.ChatIDs, cfg.Body, msgr.APIKey, verbose)
+			slackMsgr, err := messenger.NewSlackMessenger(m.ChatIDs, cfg, msgr.APIKey, verbose)
 			if err != nil {
 				return sm, err
 			}

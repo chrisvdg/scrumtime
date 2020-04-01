@@ -3,11 +3,12 @@ package messenger
 import (
 	"fmt"
 
+	"github.com/chrisvdg/scrumtime/config"
 	"github.com/nlopes/slack"
 )
 
 // NewSlackMessenger returns a new Slack messenger
-func NewSlackMessenger(channel []string, message, apikey string, verbose bool) (*SlackMessenger, error) {
+func NewSlackMessenger(channel []string, message *config.Message, apikey string, verbose bool) (*SlackMessenger, error) {
 	if apikey == "" {
 		return nil, fmt.Errorf("no api key provided")
 	}
@@ -26,7 +27,7 @@ func NewSlackMessenger(channel []string, message, apikey string, verbose bool) (
 // SlackMessenger represents a messenger for Slack
 type SlackMessenger struct {
 	Channels []string
-	Message  string
+	Message  *config.Message
 	client   *slack.Client
 	verbose  bool
 }
@@ -37,12 +38,15 @@ func (s *SlackMessenger) SendMessage() error {
 
 		channelID, timestamp, err := s.client.PostMessage(
 			channel,
-			s.Message,
+			s.Message.Body,
 			slack.PostMessageParameters{})
 
 		if err != nil {
 			err = fmt.Errorf("Slack messenger: Something went wrong sending a message (%s at %s): %s", channelID, timestamp, err)
 			return err
+		}
+		if s.Message.ExpireTime != "" {
+			fmt.Println("Warning: Expire time is not supported by the Slack messenger.")
 		}
 	}
 
