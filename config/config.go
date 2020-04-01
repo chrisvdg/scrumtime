@@ -71,10 +71,11 @@ func (a *App) Validate() error {
 
 // Message represents the configuration of a single Messaged message
 type Message struct {
-	Messengers []Messenger `yaml:"messengers"`
-	Schedule   string      `yaml:"schedule"`
-	Body       string      `yaml:"body"`
-	ExpireTime string      `yaml:"expiretime"`
+	Messengers         []Messenger `yaml:"messengers"`
+	Schedule           string      `yaml:"schedule"`
+	Body               string      `yaml:"body"`
+	ExpireTime         string      `yaml:"expiretime"`
+	DisableLinkPreview bool        `yaml:"disable_link_preview"`
 }
 
 // Messenger represents a messenger of a message

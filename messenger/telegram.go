@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/chrisvdg/scrumtime/config"
-	"github.com/go-telegram-bot-api/telegram-bot-api"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
 )
 
 // NewTelegramMessenger returns a new Telegram messenger
@@ -47,6 +47,7 @@ func (t *TelegramMessenger) SendMessage() error {
 
 		msg := tgbotapi.NewMessage(id, t.Message.Body)
 		msg.ParseMode = "markdown"
+		msg.DisableWebPagePreview = t.Message.DisableLinkPreview
 		message, err := t.client.Send(msg)
 		if err != nil {
 			return fmt.Errorf("Telegram messenger: Something went wrong sending message to %d: %s", id, err)
