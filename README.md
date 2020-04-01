@@ -30,7 +30,8 @@ messages:
       - bot: ex_telegram
         chat_ids: ['-123456789']
     schedule: '0 0 0 * * 1-5' # More info on format https://godoc.org/github.com/robfig/cron#hdr-CRON_Expression_Format
-    expiretime: 10m # Optional time the message will be deleted again see https://golang.org/src/time/format.go?s=40541:40587#L1364
+    expiretime: 10m # Optional time after which the message will be deleted. Format: https://golang.org/src/time/format.go?s=40541:40587#L1364
+    disable_link_preview: True # Optional flag for disabling link preview when sending url's
 ```
 
 ### Schedule
