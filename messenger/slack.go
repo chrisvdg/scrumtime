@@ -21,6 +21,10 @@ func NewSlackMessenger(channel []string, message *config.Message, apikey string,
 	sm.client = slack.New(apikey)
 	sm.verbose = verbose
 
+	if message.ExpireTime != "" {
+		fmt.Println("Warning: Expire time is not supported by the Slack messenger.")
+	}
+
 	return sm, nil
 }
 
@@ -39,14 +43,14 @@ func (s *SlackMessenger) SendMessage() error {
 		channelID, timestamp, err := s.client.PostMessage(
 			channel,
 			s.Message.Body,
-			slack.PostMessageParameters{})
+			slack.PostMessageParameters{
+				UnfurlLinks: s.Message.DisableLinkPreview,
+				UnfurlMedia: s.Message.DisableLinkPreview,
+			})
 
 		if err != nil {
 			err = fmt.Errorf("Slack messenger: Something went wrong sending a message (%s at %s): %s", channelID, timestamp, err)
 			return err
-		}
-		if s.Message.ExpireTime != "" {
-			fmt.Println("Warning: Expire time is not supported by the Slack messenger.")
 		}
 	}
 
